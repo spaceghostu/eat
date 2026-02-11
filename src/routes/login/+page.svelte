@@ -1,8 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { authClient } from '$lib/auth-client';
 	import type { ActionData } from './$types';
 
 	let { form }: { form: ActionData } = $props();
+
+	function signInWithGoogle() {
+		authClient.signIn.social({ provider: 'google' });
+	}
 </script>
 
 <h1>Login</h1>
@@ -40,3 +45,12 @@
 	>
 </form>
 <p class="text-red-500">{form?.message ?? ''}</p>
+
+<hr class="my-4" />
+
+<button
+	onclick={signInWithGoogle}
+	class="rounded-md bg-white px-4 py-2 text-gray-700 shadow-sm ring-1 ring-gray-300 transition hover:bg-gray-50"
+>
+	Sign in with Google
+</button>
