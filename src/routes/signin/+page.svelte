@@ -10,7 +10,7 @@
 	}
 </script>
 
-<h1>Login</h1>
+<h1>Sign in</h1>
 <form method="post" action="?/signInEmail" use:enhance>
 	<label>
 		Email
@@ -36,7 +36,7 @@
 		/>
 	</label>
 	<button class="rounded-md bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
-		>Login</button
+		>Sign in</button
 	>
 	<button
 		formaction="?/signUpEmail"
