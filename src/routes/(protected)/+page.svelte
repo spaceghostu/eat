@@ -3,7 +3,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
 	import { Checkbox } from '$lib/components/ui/checkbox';
-	import { Badge } from '$lib/components/ui/badge';
+	import SwipeableRecipeCard from '$lib/components/swipeable-recipe-card.svelte';
 	import * as Sheet from '$lib/components/ui/sheet';
 	import ShoppingCart from '@lucide/svelte/icons/shopping-cart';
 	import ClipboardCopy from '@lucide/svelte/icons/clipboard-copy';
@@ -15,12 +15,30 @@
 	let selectedIds = new SvelteSet<number>();
 	let sheetOpen = $state(false);
 	let checkedItems = new SvelteSet<string>();
+	let openCardId = $state<number | null>(null);
 
 	function toggleRecipe(id: number) {
 		if (selectedIds.has(id)) {
 			selectedIds.delete(id);
 		} else {
 			selectedIds.add(id);
+		}
+	}
+
+	// Clean up selectedIds when recipes change (e.g. after delete)
+	$effect(() => {
+		const recipeIds = new Set(data.recipes.map((r) => r.id));
+		for (const id of selectedIds) {
+			if (!recipeIds.has(id)) {
+				selectedIds.delete(id);
+			}
+		}
+	});
+
+	// Close open card on scroll
+	function onScroll() {
+		if (openCardId !== null) {
+			openCardId = null;
 		}
 	}
 
@@ -69,6 +87,8 @@
 	}
 </script>
 
+<svelte:window onscroll={onScroll} />
+
 <div>
 	<div class="mb-4 flex items-center justify-between gap-2 sm:mb-6">
 		<h1 class="text-xl font-bold sm:text-2xl">Recipes</h1>
@@ -93,22 +113,16 @@
 	{:else}
 		<div class="space-y-2 sm:space-y-3">
 			{#each data.recipes as recipe (recipe.id)}
-				<Card.Root class="transition-colors active:bg-accent/50 sm:hover:bg-accent/50">
-					<div class="flex items-center gap-3 p-3 sm:gap-4 sm:p-4">
-						<Checkbox
-							checked={selectedIds.has(recipe.id)}
-							onCheckedChange={() => toggleRecipe(recipe.id)}
-						/>
-						<a href="/recipes/{recipe.id}" class="flex min-w-0 flex-1 items-center justify-between gap-2">
-							<h2 class="truncate font-medium">{recipe.name}</h2>
-							<Badge variant="secondary" class="shrink-0">
-								{recipe.ingredients.length} ingredient{recipe.ingredients.length !== 1
-									? 's'
-									: ''}
-							</Badge>
-						</a>
-					</div>
-				</Card.Root>
+				<SwipeableRecipeCard
+					{recipe}
+					selected={selectedIds.has(recipe.id)}
+					isOpen={openCardId === recipe.id}
+					onToggleSelect={() => toggleRecipe(recipe.id)}
+					onRequestOpen={() => (openCardId = recipe.id)}
+					onRequestClose={() => {
+						if (openCardId === recipe.id) openCardId = null;
+					}}
+				/>
 			{/each}
 		</div>
 	{/if}
