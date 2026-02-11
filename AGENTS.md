@@ -1,3 +1,16 @@
+## Mobile-First Design
+
+This app is **mobile-first**. All styling and layout decisions should prioritize the mobile experience:
+
+- Design for small screens (< 640px) first, then enhance for larger screens using Tailwind responsive prefixes (`sm:`, `md:`, `lg:`)
+- Touch targets should be at least 44x44px
+- Use full-width layouts on mobile, constrained widths on larger screens
+- Prefer bottom sheets and drawers over modals/popups for mobile interactions
+- Stack form fields vertically on mobile, use horizontal layouts only at `sm:` breakpoint and above
+- Test all UI at 375px width (iPhone SE) as the minimum supported viewport
+
+---
+
 You are able to use the Svelte MCP server, where you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use the available tools effectively:
 
 ## Available MCP Tools:

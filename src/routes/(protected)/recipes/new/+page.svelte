@@ -9,6 +9,6 @@
 </script>
 
 <div>
-	<h1 class="mb-6 text-2xl font-bold">New Recipe</h1>
+	<h1 class="mb-4 text-xl font-bold sm:mb-6 sm:text-2xl">New Recipe</h1>
 	<RecipeForm {formInstance} submitLabel="Create Recipe" />
 </div>

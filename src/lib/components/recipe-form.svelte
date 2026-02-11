@@ -61,67 +61,69 @@
 			<p class="text-sm text-destructive">{$errors.ingredients._errors[0]}</p>
 		{/if}
 
-		<div class="space-y-3">
+		<div class="space-y-4 sm:space-y-3">
 			{#each $form.ingredients as _, i (i)}
-				<div class="flex items-start gap-2">
-					<div class="flex-1 space-y-1">
-						<Input
-							name="ingredients[{i}].name"
-							bind:value={$form.ingredients[i].name}
-							placeholder="Ingredient name"
-						/>
-						{#if $errors.ingredients?.[i]?.name}
-							<p class="text-xs text-destructive">{$errors.ingredients[i].name[0]}</p>
-						{/if}
-					</div>
-					<div class="w-24 space-y-1">
-						<Input
-							name="ingredients[{i}].quantity"
-							type="number"
-							step="any"
-							min="0"
-							bind:value={$form.ingredients[i].quantity}
-							placeholder="Qty"
-						/>
-						{#if $errors.ingredients?.[i]?.quantity}
-							<p class="text-xs text-destructive">{$errors.ingredients[i].quantity[0]}</p>
-						{/if}
-					</div>
-					<div class="w-28 space-y-1">
-						<Select.Root
-							type="single"
-							value={$form.ingredients[i].unit}
-							onValueChange={(v) => {
-								form.update((f: RecipeData) => {
-									f.ingredients[i].unit = v;
-									return f;
-								});
-							}}
+				<div class="rounded-lg border bg-card p-3 sm:border-0 sm:bg-transparent sm:p-0">
+					<div class="grid grid-cols-[1fr_auto] gap-2 sm:flex sm:items-start">
+						<div class="col-span-2 space-y-1 sm:flex-1">
+							<Input
+								name="ingredients[{i}].name"
+								bind:value={$form.ingredients[i].name}
+								placeholder="Ingredient name"
+							/>
+							{#if $errors.ingredients?.[i]?.name}
+								<p class="text-xs text-destructive">{$errors.ingredients[i].name[0]}</p>
+							{/if}
+						</div>
+						<div class="space-y-1 sm:w-24">
+							<Input
+								name="ingredients[{i}].quantity"
+								type="number"
+								step="any"
+								min="0"
+								bind:value={$form.ingredients[i].quantity}
+								placeholder="Qty"
+							/>
+							{#if $errors.ingredients?.[i]?.quantity}
+								<p class="text-xs text-destructive">{$errors.ingredients[i].quantity[0]}</p>
+							{/if}
+						</div>
+						<div class="space-y-1 sm:w-28">
+							<Select.Root
+								type="single"
+								value={$form.ingredients[i].unit}
+								onValueChange={(v) => {
+									form.update((f: RecipeData) => {
+										f.ingredients[i].unit = v;
+										return f;
+									});
+								}}
+							>
+								<Select.Trigger class="w-full">
+									{$form.ingredients[i].unit || 'Unit'}
+								</Select.Trigger>
+								<Select.Content>
+									{#each UNITS as unit (unit)}
+										<Select.Item value={unit}>{unit}</Select.Item>
+									{/each}
+								</Select.Content>
+							</Select.Root>
+							<input type="hidden" name="ingredients[{i}].unit" value={$form.ingredients[i].unit} />
+							{#if $errors.ingredients?.[i]?.unit}
+								<p class="text-xs text-destructive">{$errors.ingredients[i].unit[0]}</p>
+							{/if}
+						</div>
+						<Button
+							type="button"
+							variant="ghost"
+							size="icon"
+							class="self-end shrink-0 sm:mt-0.5 sm:self-start"
+							onclick={() => removeIngredient(i)}
+							disabled={get(form).ingredients.length <= 1}
 						>
-							<Select.Trigger class="w-full">
-								{$form.ingredients[i].unit || 'Unit'}
-							</Select.Trigger>
-							<Select.Content>
-								{#each UNITS as unit (unit)}
-									<Select.Item value={unit}>{unit}</Select.Item>
-								{/each}
-							</Select.Content>
-						</Select.Root>
-						<input type="hidden" name="ingredients[{i}].unit" value={$form.ingredients[i].unit} />
-						{#if $errors.ingredients?.[i]?.unit}
-							<p class="text-xs text-destructive">{$errors.ingredients[i].unit[0]}</p>
-						{/if}
+							<Trash2 class="size-4" />
+						</Button>
 					</div>
-					<Button
-						type="button"
-						variant="ghost"
-						size="icon"
-						class="mt-0.5 shrink-0"
-						onclick={() => removeIngredient(i)}
-						disabled={get(form).ingredients.length <= 1}
-					>
-						<Trash2 class="size-4" />
-					</Button>
 				</div>
 			{/each}
 		</div>

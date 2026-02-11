@@ -6,6 +6,9 @@
 	let { children } = $props();
 </script>
 
-<svelte:head><link rel="icon" href={favicon} /></svelte:head>
+<svelte:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<link rel="icon" href={favicon} />
+</svelte:head>
 <ModeWatcher />
 {@render children()}

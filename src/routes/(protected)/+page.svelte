@@ -70,16 +70,16 @@
 </script>
 
 <div>
-	<div class="mb-6 flex items-center justify-between">
-		<h1 class="text-2xl font-bold">Recipes</h1>
+	<div class="mb-4 flex items-center justify-between gap-2 sm:mb-6">
+		<h1 class="text-xl font-bold sm:text-2xl">Recipes</h1>
 		<div class="flex gap-2">
 			{#if selectedIds.size > 0}
-				<Button variant="outline" onclick={openShoppingList}>
+				<Button variant="outline" size="sm" class="sm:size-default" onclick={openShoppingList}>
 					<ShoppingCart class="size-4" />
-					Shopping List ({selectedIds.size})
+					<span class="hidden sm:inline">Shopping List</span> ({selectedIds.size})
 				</Button>
 			{/if}
-			<Button href="/recipes/new">New Recipe</Button>
+			<Button size="sm" class="sm:size-default" href="/recipes/new">New Recipe</Button>
 		</div>
 	</div>
 
@@ -91,19 +91,17 @@
 			</Card.Content>
 		</Card.Root>
 	{:else}
-		<div class="space-y-3">
+		<div class="space-y-2 sm:space-y-3">
 			{#each data.recipes as recipe (recipe.id)}
-				<Card.Root class="transition-colors hover:bg-accent/50">
-					<div class="flex items-center gap-4 p-4">
+				<Card.Root class="transition-colors active:bg-accent/50 sm:hover:bg-accent/50">
+					<div class="flex items-center gap-3 p-3 sm:gap-4 sm:p-4">
 						<Checkbox
 							checked={selectedIds.has(recipe.id)}
 							onCheckedChange={() => toggleRecipe(recipe.id)}
 						/>
-						<a href="/recipes/{recipe.id}" class="flex flex-1 items-center justify-between">
-							<div>
-								<h2 class="font-medium">{recipe.name}</h2>
-							</div>
-							<Badge variant="secondary">
+						<a href="/recipes/{recipe.id}" class="flex min-w-0 flex-1 items-center justify-between gap-2">
+							<h2 class="truncate font-medium">{recipe.name}</h2>
+							<Badge variant="secondary" class="shrink-0">
 								{recipe.ingredients.length} ingredient{recipe.ingredients.length !== 1
 									? 's'
 									: ''}

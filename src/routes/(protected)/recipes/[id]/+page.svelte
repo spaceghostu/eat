@@ -14,8 +14,8 @@
 </script>
 
 <div>
-	<div class="mb-6 flex items-center justify-between">
-		<h1 class="text-2xl font-bold">Edit Recipe</h1>
+	<div class="mb-4 flex items-center justify-between sm:mb-6">
+		<h1 class="text-xl font-bold sm:text-2xl">Edit Recipe</h1>
 		<Button variant="destructive" size="sm" onclick={() => (deleteDialogOpen = true)}>
 			Delete
 		</Button>
